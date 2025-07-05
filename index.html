@@ -1,1 +1,781 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة إدارة المدرسة الابتدائية</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- SheetJS library for Excel export/import -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2 sidebar">
+                <div class="school-logo text-center my-3">
+                    <img src="img/logo.png" alt="شعار المدرسة" class="img-fluid" onerror="this.src='img/default-logo.png'; this.onerror=''">
+                    <h5 class="mt-2">منصة إدارة المدرسة</h5>
+                </div>
+                <div class="navigation">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-page="dashboard">
+                                <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="students">
+                                <i class="fas fa-user-graduate"></i> إدارة التلاميذ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="teachers">
+                                <i class="fas fa-chalkboard-teacher"></i> الأساتذة والمشرفين
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="cafeteria">
+                                <i class="fas fa-utensils"></i> المطعم المدرسي
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="cafeteria-workers">
+                                <i class="fas fa-users"></i> عمال المطعم
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="documents">
+                                <i class="fas fa-file-alt"></i> الوثائق المدرسية
+                            </a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="Matières">
+                                <i class="fas fa-book-open"></i> المواد
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="Classes">
+                                <i class="fas fa-school"></i> الأقسام الدراسية
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="statistics">
+                                <i class="fas fa-chart-bar"></i> الإحصائيات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="settings">
+                                <i class="fas fa-cog"></i> الإعدادات
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-10 main-content">
+                <div class="top-bar p-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 id="page-title">لوحة التحكم</h4>
+                        </div>
+                        <div class="col-md-6 text-start">
+                            <div class="user-info">
+                                <span class="user-name">مدير المدرسة</span>
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Area -->
+                <div class="content-area p-4">
+                    <!-- Dashboard Page -->
+                    <div id="dashboard-page" class="content-page active">
+                        <div class="row">
+                            <div class="col-md-3 mb-4">
+                                <div class="stat-card">
+                                    <div class="stat-card-body">
+                                        <div class="stat-card-icon">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <div class="stat-card-info">
+                                            <h5 class="stat-card-title">إجمالي التلاميذ</h5>
+                                            <p class="stat-card-value" id="total-students">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="stat-card">
+                                    <div class="stat-card-body">
+                                        <div class="stat-card-icon">
+                                            <i class="fas fa-chalkboard-teacher"></i>
+                                        </div>
+                                        <div class="stat-card-info">
+                                            <h5 class="stat-card-title">الأساتذة</h5>
+                                            <p class="stat-card-value" id="total-teachers">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="stat-card">
+                                    <div class="stat-card-body">
+                                        <div class="stat-card-icon">
+                                            <i class="fas fa-utensils"></i>
+                                        </div>
+                                        <div class="stat-card-info">
+                                            <h5 class="stat-card-title">المستفيدون من المطعم</h5>
+                                            <p class="stat-card-value" id="total-cafeteria-users">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="stat-card">
+                                    <div class="stat-card-body">
+                                        <div class="stat-card-icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div class="stat-card-info">
+                                            <h5 class="stat-card-title">عمال المطعم</h5>
+                                            <p class="stat-card-value" id="total-cafeteria-workers">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">توزيع التلاميذ حسب الأقسام</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="classes-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">توزيع التلاميذ حسب الجنس</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="gender-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title">آخر العمليات</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>العملية</th>
+                                                        <th>التفاصيل</th>
+                                                        <th>التاريخ</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="recent-activities">
+                                                    <tr>
+                                                        <td colspan="3" class="text-center">لا توجد عمليات حديثة</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Students Page -->
+                    <div id="students-page" class="content-page">
+                        <!-- Students content will be loaded here -->
+                    </div>
+                    
+                    <!-- Teachers Page -->
+                    <div id="teachers-page" class="content-page">
+                        <!-- Teachers content will be loaded here -->
+                    </div>
+                    
+                    <!-- Cafeteria Page -->
+                    <div id="cafeteria-page" class="content-page">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title">إدارة المطعم المدرسي</h5>
+                                        <div>
+                                            <button class="btn btn-primary" id="add-cafeteria-user-btn">
+                                                <i class="fas fa-plus"></i> إضافة مستفيد
+                                            </button>
+                                            <button class="btn btn-success" id="add-cafeteria-income-btn">
+                                                <i class="fas fa-plus"></i> تسجيل مدخول
+                                            </button>
+                                            <button class="btn btn-warning" id="add-cafeteria-expense-btn">
+                                                <i class="fas fa-plus"></i> تسجيل مصروف
+                                            </button>
+                                            <button class="btn btn-info" id="print-cafeteria-report-btn">
+                                                <i class="fas fa-print"></i> طباعة التقرير
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="nav nav-tabs" id="cafeteriaTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users-tab-pane" type="button" role="tab">المستفيدون</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="meals-tab" data-bs-toggle="tab" data-bs-target="#meals-tab-pane" type="button" role="tab">الوجبات</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="finances-tab" data-bs-toggle="tab" data-bs-target="#finances-tab-pane" type="button" role="tab">المالية</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory-tab-pane" type="button" role="tab">المخزون</button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content" id="cafeteriaTabContent">
+                                            <div class="tab-pane fade show active" id="users-tab-pane" role="tabpanel" tabindex="0">
+                                                <div class="table-responsive mt-3">
+                                                    <table class="table table-hover" id="cafeteria-users-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>الرقم</th>
+                                                                <th>الاسم واللقب</th>
+                                                                <th>الصفة</th>
+                                                                <th>القسم</th>
+                                                                <th>الحالة</th>
+                                                                <th>الإجراءات</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="cafeteria-users-list">
+                                                            <!-- سيتم تعبئة هذا الجدول ديناميًا -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="meals-tab-pane" role="tabpanel" tabindex="0">
+                                                <div class="row mt-3">
+                                                    <div class="col-md-6">
+                                                        <div class="card">
+                                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                                <h6 class="card-title">قائمة الوجبات الأسبوعية</h6>
+                                                                <button class="btn btn-sm btn-primary" id="edit-meal-plan-btn">
+                                                                    <i class="fas fa-edit"></i> تعديل
+                                                                </button>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <table class="table table-bordered" id="weekly-meals-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>اليوم</th>
+                                                                            <th>الوجبة الرئيسية</th>
+                                                                            <th>الحلوى</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="weekly-meals-list">
+                                                                        <!-- سيتم تعبئة هذا الجدول ديناميًا -->
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h6 class="card-title">تسجيل الحضور اليومي</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3">
+                                                                    <label for="attendance-date" class="form-label">التاريخ</label>
+                                                                    <input type="date" class="form-control" id="attendance-date">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">عدد الحاضرين</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">التلاميذ</span>
+                                                                        <input type="number" class="form-control" id="students-attendance" min="0">
+                                                                        <span class="input-group-text">الأساتذة</span>
+                                                                        <input type="number" class="form-control" id="teachers-attendance" min="0">
+                                                                    </div>
+                                                                </div>
+                                                                <button class="btn btn-primary w-100" id="save-attendance-btn">حفظ الحضور</button>
+                                                                <div class="mt-3">
+                                                                    <canvas id="attendance-chart" height="200"></canvas>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="finances-tab-pane" role="tabpanel" tabindex="0">
+                                                <div class="row mt-3">
+                                                    <div class="col-md-4">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h6 class="card-title">ملخص المالية</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="financial-summary">
+                                                                    <div class="d-flex justify-content-between mb-2">
+                                                                        <span>إجمالي المدخولات:</span>
+                                                                        <span id="total-income" class="text-success fw-bold">0 دج</span>
+                                                                    </div>
+                                                                    <div class="d-flex justify-content-between mb-2">
+                                                                        <span>إجمالي المصاريف:</span>
+                                                                        <span id="total-expenses" class="text-danger fw-bold">0 دج</span>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <span>الرصيد الحالي:</span>
+                                                                        <span id="current-balance" class="fw-bold">0 دج</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mt-3">
+                                                                    <canvas id="finances-chart" height="200"></canvas>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h6 class="card-title">سجل العمليات المالية</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover" id="financial-transactions-table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>التاريخ</th>
+                                                                                <th>النوع</th>
+                                                                                <th>البيان</th>
+                                                                                <th>المبلغ</th>
+                                                                                <th>الإجراءات</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="financial-transactions-list">
+                                                                            <!-- سيتم تعبئة هذا الجدول ديناميًا -->
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="inventory-tab-pane" role="tabpanel" tabindex="0">
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12 mb-3">
+                                                        <div class="card">
+                                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                                <h6 class="card-title">مخزون المواد الغذائية</h6>
+                                                                <button class="btn btn-sm btn-primary" id="add-inventory-item-btn">
+                                                                    <i class="fas fa-plus"></i> إضافة مادة
+                                                                </button>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover" id="inventory-table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>المادة</th>
+                                                                                <th>الكمية المتوفرة</th>
+                                                                                <th>وحدة القياس</th>
+                                                                                <th>تاريخ آخر توريد</th>
+                                                                                <th>الحالة</th>
+                                                                                <th>الإجراءات</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="inventory-list">
+                                                                            <!-- سيتم تعبئة هذا الجدول ديناميًا -->
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h6 class="card-title">استهلاك المواد</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3">
+                                                                    <label for="consumption-date" class="form-label">التاريخ</label>
+                                                                    <input type="date" class="form-control" id="consumption-date">
+                                                                </div>
+                                                                <div id="consumption-items-container">
+                                                                    <!-- سيتم إضافة حقول المواد المستهلكة ديناميًا -->
+                                                                </div>
+                                                                <button class="btn btn-primary mt-2" id="add-consumption-item-btn">
+                                                                    <i class="fas fa-plus"></i> إضافة مادة أخرى
+                                                                </button>
+                                                                <button class="btn btn-success mt-2 float-end" id="save-consumption-btn">
+                                                                    حفظ الاستهلاك
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h6 class="card-title">تقرير الاستهلاك</h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">الفترة</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">من</span>
+                                                                        <input type="date" class="form-control" id="consumption-report-start">
+                                                                        <span class="input-group-text">إلى</span>
+                                                                        <input type="date" class="form-control" id="consumption-report-end">
+                                                                        <button class="btn btn-primary" id="generate-consumption-report-btn">عرض</button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-sm" id="consumption-report-table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>المادة</th>
+                                                                                <th>إجمالي الاستهلاك</th>
+                                                                                <th>المتوسط اليومي</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="consumption-report-list">
+                                                                            <!-- سيتم تعبئة هذا الجدول ديناميًا -->
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">سجل الحضور</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="worker-attendance-date" class="form-label">التاريخ</label>
+                                            <input type="date" class="form-control" id="worker-attendance-date">
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm" id="worker-attendance-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>الاسم واللقب</th>
+                                                        <th>الحضور</th>
+                                                        <th>ملاحظات</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="worker-attendance-list">
+                                                    <!-- سيتم تعبئة هذا الجدول ديناميًا -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <button class="btn btn-primary mt-2" id="save-worker-attendance-btn">حفظ الحضور</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">تقرير الحضور الشهري</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="attendance-report-month" class="form-label">الشهر</label>
+                                            <input type="month" class="form-control" id="attendance-report-month">
+                                            <button class="btn btn-primary mt-2" id="generate-attendance-report-btn">عرض التقرير</button>
+                                        </div>
+                                        <div class="table-responsive mt-3">
+                                            <table class="table table-sm table-bordered" id="monthly-attendance-table">
+                                                <thead>
+                                                    <tr id="attendance-days-header">
+                                                        <th>الاسم</th>
+                                                        <!-- سيتم إضافة أيام الشهر ديناميًا -->
+                                                        <th>المجموع</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="monthly-attendance-list">
+                                                    <!-- سيتم تعبئة هذا الجدول ديناميًا -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <button class="btn btn-info mt-2" id="print-attendance-report-btn">
+                                            <i class="fas fa-print"></i> طباعة التقرير
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cafeteria Workers Page -->
+                    <div id="cafeteria-workers-page" class="content-page">
+                        <div class="row mb-4">
+                            <div class="col-md-6 text-start">
+                                <button class="btn btn-primary" id="add-worker-btn">
+                                    <i class="fas fa-plus"></i> إضافة عامل جديد
+                                </button>
+                                <button class="btn btn-success" id="print-workers-report-btn">
+                                    <i class="fas fa-print"></i> طباعة تقرير
+                                </button>
+                                <div class="btn-group">
+                                    <button class="btn btn-info dropdown-toggle" type="button" id="dataManagementDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-database"></i> إدارة البيانات
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dataManagementDropdown">
+                                        <li><a class="dropdown-item" href="#" id="export-workers-excel-btn"><i class="fas fa-file-export"></i> تصدير إلى إكسل</a></li>
+                                        <li><a class="dropdown-item" href="#" id="import-workers-excel-btn"><i class="fas fa-file-import"></i> استيراد من إكسل</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" id="backup-workers-data-btn"><i class="fas fa-save"></i> حفظ نسخة احتياطية</a></li>
+                                        <li><a class="dropdown-item" href="#" id="restore-workers-data-btn"><i class="fas fa-upload"></i> استعادة نسخة احتياطية</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-card-body">
+                                        <div class="stat-card-icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div class="stat-card-info">
+                                            <h5 class="stat-card-title">العمال النشطين</h5>
+                                            <p class="stat-card-value" id="active-workers-count">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-card-body">
+                                        <div class="stat-card-icon">
+                                            <i class="fas fa-user-check"></i>
+                                        </div>
+                                        <div class="stat-card-info">
+                                            <h5 class="stat-card-title">نسبة الحضور</h5>
+                                            <p class="stat-card-value" id="attendance-rate">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-card-body">
+                                        <div class="stat-card-icon">
+                                            <i class="fas fa-tasks"></i>
+                                        </div>
+                                        <div class="stat-card-info">
+                                            <h5 class="stat-card-title">إنجاز المهام</h5>
+                                            <p class="stat-card-value" id="tasks-completion-rate">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-card-body">
+                                        <div class="stat-card-icon">
+                                            <i class="fas fa-user-cog"></i>
+                                        </div>
+                                        <div class="stat-card-info">
+                                            <h5 class="stat-card-title">إجمالي العمال</h5>
+                                            <p class="stat-card-value" id="total-workers-count">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-8 mb-4">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title">قائمة العمال</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>الاسم</th>
+                                                        <th>المنصب</th>
+                                                        <th>رقم الهاتف</th>
+                                                        <th>تاريخ البداية</th>
+                                                        <th>الحالة</th>
+                                                        <th>الإجراءات</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="cafeteria-workers-list">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">لا يوجد عمال مسجلين</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-4">
+                                <div class="card mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title">تسجيل الحضور</h5>
+                                        <button class="btn btn-sm btn-primary" id="add-worker-attendance-btn">
+                                            <i class="fas fa-plus"></i> تسجيل
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="worker-attendance-date" class="form-label">التاريخ</label>
+                                            <input type="date" class="form-control" id="worker-attendance-date">
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>التاريخ</th>
+                                                        <th>العامل</th>
+                                                        <th>الحالة</th>
+                                                        <th>الحضور</th>
+                                                        <th>الانصراف</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="worker-attendance-list">
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">لا توجد سجلات</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title">المهام</h5>
+                                        <button class="btn btn-sm btn-primary" id="add-worker-task-btn">
+                                            <i class="fas fa-plus"></i> إضافة مهمة
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>العامل</th>
+                                                        <th>المهمة</th>
+                                                        <th>تاريخ التكليف</th>
+                                                        <th>تاريخ الاستحقاق</th>
+                                                        <th>الحالة</th>
+                                                        <th>الإجراءات</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="worker-tasks-list">
+                                                    <tr>
+                                                        <td colspan="6" class="text-center">لا توجد مهام مسجلة</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title">تقييم الأداء</h5>
+                                        <button class="btn btn-sm btn-primary" id="add-worker-performance-btn">
+                                            <i class="fas fa-plus"></i> إضافة تقييم
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <canvas id="worker-attendance-chart"></canvas>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <canvas id="worker-performance-chart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Documents Page -->
+                    <div id="documents-page" class="content-page">
+                        <!-- Documents content will be loaded here -->
+                    </div>
+                    
+                    <!-- Statistics Page -->
+                    <div id="statistics-page" class="content-page">
+                        <!-- Statistics content will be loaded here -->
+                    </div>
+                    
+                    <!-- Settings Page -->
+                    <div id="settings-page" class="content-page">
+                        <!-- Settings content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom JS -->
+    <script src="js/app.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/students.js"></script>
+    <script src="js/teachers.js"></script>
+    <script src="js/cafeteria.js"></script>
+    <script src="js/cafeteria-workers.js"></script>
+    <script src="js/documents.js"></script>
+    <script src="js/statistics.js"></script>
+</body>
+</html>
