@@ -1,1 +1,456 @@
+/* ===== المتغيرات العامة ===== */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2980b9;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --info-color: #3498db;
+    --sidebar-width: 250px;
+    --transition-speed: 0.3s;
+}
 
+/* ===== الأنماط العامة ===== */
+body {
+    font-family: 'Tajawal', 'Cairo', sans-serif;
+    background-color: #f5f5f5;
+    color: var(--dark-color);
+    min-height: 100vh;
+}
+
+/* ===== الشريط الجانبي ===== */
+.sidebar {
+    background-color: var(--dark-color);
+    color: white;
+    min-height: 100vh;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: var(--sidebar-width);
+    z-index: 1000;
+    transition: all var(--transition-speed);
+}
+
+.school-logo img {
+    max-width: 80px;
+    margin: 0 auto;
+}
+
+.school-logo h5 {
+    color: white;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.navigation .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 5px 10px;
+    transition: all var(--transition-speed);
+}
+
+.navigation .nav-link:hover,
+.navigation .nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.navigation .nav-link i {
+    margin-left: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+/* ===== المحتوى الرئيسي ===== */
+.main-content {
+    margin-right: var(--sidebar-width);
+    transition: all var(--transition-speed);
+}
+
+.top-bar {
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.user-info i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.content-area {
+    padding: 20px;
+}
+
+/* ===== بطاقات الإحصائيات ===== */
+.stat-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform var(--transition-speed);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card-body {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+}
+
+.stat-card-icon {
+    background-color: var(--light-color);
+    color: var(--primary-color);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-left: 15px;
+}
+
+.stat-card-info {
+    flex-grow: 1;
+}
+
+.stat-card-title {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.stat-card-value {
+    margin: 5px 0 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--dark-color);
+}
+
+/* ===== البطاقات والجداول ===== */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+/* ===== الأزرار ===== */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* ===== صفحات المحتوى ===== */
+.content-page {
+    display: none;
+}
+
+.content-page.active {
+    display: block;
+}
+
+/* ===== النماذج ===== */
+.form-label {
+    font-weight: 500;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+/* ===== الطباعة ===== */
+@media print {
+    .sidebar, .top-bar, .no-print {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-right: 0 !important;
+        width: 100% !important;
+    }
+    
+    .content-area {
+        padding: 0 !important;
+    }
+    
+    .print-document {
+        padding: 20px;
+    }
+}
+
+/* ===== التجاوب مع الشاشات الصغيرة ===== */
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(calc(var(--sidebar-width) * -1));
+    }
+    
+    .sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-right: 0;
+    }
+    
+    .mobile-toggle {
+        display: block !important;
+    }
+}
+
+/* ===== أنماط الوثائق ===== */
+.document-template {
+    background-color: white;
+    padding: 30px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.document-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.document-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.document-subtitle {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.document-body {
+    margin-bottom: 30px;
+}
+
+.document-footer {
+    text-align: left;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.document-stamp {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* ===== أنماط الإشعارات ===== */
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    transform: translateX(calc(100% + 40px));
+    transition: transform 0.3s ease-in-out;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification-icon {
+    margin-left: 15px;
+    font-size: 1.2rem;
+}
+
+.notification-success .notification-icon {
+    color: var(--success-color);
+}
+
+.notification-error .notification-icon {
+    color: var(--danger-color);
+}
+
+.notification-warning .notification-icon {
+    color: var(--warning-color);
+}
+
+.notification-info .notification-icon {
+    color: var(--info-color);
+}
+
+.notification-message {
+    flex-grow: 1;
+}
+
+.notification-close {
+    margin-right: 10px;
+    cursor: pointer;
+    color: #777;
+}
+
+/* ===== أنماط الجداول ===== */
+.table-container {
+    overflow-x: auto;
+}
+
+.table-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.table-actions button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* ===== أنماط البحث والتصفية ===== */
+.search-filter-container {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* ===== أنماط الطباعة ===== */
+.print-only {
+    display: none;
+}
+
+@media print {
+    .print-only {
+        display: block;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+    }
+    
+    .document-template {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+}
+
+/* ===== أنماط الشعار الرسمي ===== */
+.official-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.official-logo {
+    max-width: 80px;
+}
+
+.official-title {
+    text-align: center;
+    flex-grow: 1;
+}
+
+.official-title h3 {
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+
+.official-title h4 {
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.official-title h5 {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+/* ===== أنماط الشهادات ===== */
+.certificate {
+    border: 5px double #000;
+    padding: 30px;
+    position: relative;
+    background-color: #fff;
+}
+
+.certificate::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="30" y="40" font-family="Arial" font-size="30" opacity="0.1" transform="rotate(45 50 50)">الجزائر</text></svg>');
+    pointer-events: none;
+    opacity: 0.1;
+}
+
+.certificate-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+.certificate-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.certificate-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.certificate-date {
+    text-align: right;
+}
+
+.certificate-signature {
+    text-align: left;
+}
